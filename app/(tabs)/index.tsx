@@ -6,7 +6,7 @@ import { getDistance } from 'geolib';
 
 const MapScreen = () => {
   const [location, setLocation] = useState({
-    latitude: -26.0331, // Default location
+    latitude: -26.0331,
     longitude: 28.0386,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
@@ -59,23 +59,20 @@ const MapScreen = () => {
           <MapView
             style={styles.map}
             region={location}
-            showsUserLocation={false}  // Disable default user location marker
+            showsUserLocation={true}
           >
-            {/* Custom Marker for user's location (Bin or Trash) */}
-            <Marker coordinate={{ latitude: location.latitude, longitude: location.longitude }}>
-              <View style={styles.emojiMarker}>
-                <Text style={styles.emoji}>🗑️</Text> {/* Trash Bin emoji */}
-              </View>
-              <Callout>
-                <Text>Your Location (Trash to be picked up)</Text>
-              </Callout>
-            </Marker>
+            {/* Marker for user's location */}
+            <Marker
+              coordinate={{ latitude: location.latitude, longitude: location.longitude }}
+              title="Your Location"
+              description="This is where you are"
+            />
 
             {/* Marker for garbage truck */}
             <Marker coordinate={truckLocation}>
               {/* Custom view for emoji */}
               <View style={styles.emojiMarker}>
-                <Text style={styles.emoji}>🚛</Text> {/* Garbage truck emoji */}
+                <Text style={styles.emoji}>🚛</Text>
               </View>
               <Callout>
                 <Text>Garbage Truck</Text>
@@ -84,7 +81,7 @@ const MapScreen = () => {
           </MapView>
           {distanceToTruck !== null && (
             <Text style={styles.distanceText}>
-              🚛 Garbage truck is {formatDistance(distanceToTruck)} away
+              🚛 Garbage truck is {formatDistance(distanceToTruck)} away {/* DISTANCE TRUCK MESSAGE */}
             </Text>
           )}
         </>
@@ -111,12 +108,13 @@ const styles = StyleSheet.create({
   distanceText: {
     position: 'absolute',
     bottom: 20,
+    // top:20, // FOR DISTANCE OF TRUCK BANNER TO BE SET TO TOP 
     backgroundColor: 'black',
+    color: 'white',
     padding: 10,
     borderRadius: 20,
     fontSize: 16,
     textAlign: 'center',
-    color: 'white',
   },
   emojiMarker: {
     backgroundColor: 'transparent',
